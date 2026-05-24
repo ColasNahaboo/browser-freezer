@@ -6,10 +6,12 @@
 # f, SIGSTOP, 19   freezes them
 # u, SIGCONT, 18   unfreeze
 
-# these must be the executable paths
+# these must be the executable paths, one per line, globbing OK
 browsers=(
     '/usr/lib/firefox/firefox*'
 )
+# you can redefine them in ~/.config/browser-freezer.conf
+[[ -e ~/.config/browser-freezer.conf ]] && . ~/.config/browser-freezer.conf
 
 N=/dev/null
 signal="$1"
