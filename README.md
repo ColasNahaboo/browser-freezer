@@ -1,5 +1,7 @@
 # Browser Freezer
 
+![](doc/doc/social-preview.jpg)
+
 **browser-freezer** is a small and light utility to freeze (stop) browsers when screen blanks on linux+X11.
 
 I have a small NUC-style mini PC that I run on linux with X11 (Xubuntu), but I cannot suspend it, because off some hardware incompatibilities. So, in order to minimize power consumption and heat generation, I made this small utility to freeze the browser when the screen blanks, and une-freeze it on wakeup.
