@@ -1,6 +1,6 @@
 # Browser Freezer
 
-![](doc/doc/social-preview.jpg)
+![](doc/social-preview.jpg)
 
 **browser-freezer** is a small and light utility to freeze (stop) browsers when screen blanks on linux+X11.
 
