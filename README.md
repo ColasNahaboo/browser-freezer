@@ -12,11 +12,15 @@ It is composed of two parts:
 
 ## Installation
 
+Running INSTALL compiles and installs in `/usr/local/bin`, using sudo if needed.
+If you want to install elsewhere, give the install directory as argument, e.g:
+`INSTALL ~/.local/bin`
+
 ```
-make install
+./INSTALL
 ```
 
-Make `browser-freezer` a startup application for your desktop
+Make `browser-freezer` a startup application for your desktop. For instance, in XFCE, via the "Startup Applications" dialog in the Settings, where you can add `/usr/local/bin/browser-freezer` to be run on logins.
 
 `make restart` compiles, installs, and runs the process. Must be run under your account, not root.
 
@@ -33,3 +37,13 @@ browsers=(
     opt/google/chrome/chrome
 )
 ```
+
+## Usage
+
+Just ensure that `browser-freezer` is run in background, with access to your DISPLAY.
+
+Also:
+
+- `browser-freezer-signal` just lists the process of the managed browser(s) with their status: T for freezed.
+-  `browser-freezer-signal f` frezzes the managed browser(s)
+-  `browser-freezer-signal u` un-frezzes the managed browser(s)

@@ -59,6 +59,12 @@ void signal_browser(int sig) {
     }
 }
 
+// DPMS Extension Power Levels
+//     0     DPMSModeOn               In use
+//     1     DPMSModeStandby          Blanked, low power
+//     2     DPMSModeSuspend          Blanked, lower power
+//     3     DPMSModeOff              Shut off, awaiting activity
+
 int main() {
     // Enforce single instance execution pattern before touching X11
     int lock_fd = ensure_single_instance();
@@ -84,22 +90,27 @@ int main() {
     CARD16 power_level;
     BOOL state;
 
+    DPMSInfo(dpy, &power_level, &state);
+    // Just emit a warning, but keep waiting for extension to be enabled
+    if (!state) {
+        fprintf(stderr, "Warning: DPMS Extension not enabled, browser-freezer inactive.\n");
+    }
+    
     while (1) {
         // Query the hardware state directly from Xlib shared memory
         DPMSInfo(dpy, &power_level, &state);
 
-        // state == True means DPMS is active (Screen is dark/off/suspend)
-        if (state) {
-            if (!was_blanked) {
-                signal_browser(SIGSTOP); // Native Kernel Syscall
-                was_blanked = 1;
-                sleep_time = SLEEP_BLANK;
-            }
-        } else {
-            if (was_blanked) {
+        if (!state || power_level == DPMSModeOn) { // Screen is active 
+            if (was_blanked) {               // State changed, Wake up!
                 signal_browser(SIGCONT); // Native Kernel Syscall
                 was_blanked = 0;
                 sleep_time = SLEEP_LIT;
+            }
+        } else { // Screen is blank
+            if (!was_blanked) {               // State changed, Freeze!
+                signal_browser(SIGSTOP); // Native Kernel Syscall
+                was_blanked = 1;
+                sleep_time = SLEEP_BLANK;
             }
         }
         sleep(sleep_time);
