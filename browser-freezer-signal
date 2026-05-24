@@ -1,0 +1,39 @@
+#!/bin/bash
+# shellcheck disable=SC1090,SC2155 # source files, declare&assign
+
+# Usage: With argument
+# none:            list processes with their status
+# f, SIGSTOP, 19   freezes them
+# u, SIGCONT, 18   unfreeze
+
+# these must be the executable paths
+browsers=(
+    '/usr/lib/firefox/firefox*'
+)
+
+N=/dev/null
+signal="$1"
+
+if [[ -z "$signal" ]]; then
+    for b in "${browsers[@]}"; do
+        # Find all PIDs matching the executable path
+        while read -r p; do
+            grep -E '^State:' /proc/"$p"/status |tr '\n' ' '
+            grep -E '^(Name|Pid):' /proc/"$p"/status |tr '\n' ' '
+            echo
+        done < <(find /proc -maxdepth 2 -name "exe" -lname "$b" 2>$N | cut -d/ -f3)
+    done |sort
+    exit 0
+fi
+
+sig=SIGCONT
+if [[ $signal =~ ^(f|SIGSTOP|19)$ ]]; then
+    sig=SIGSTOP
+fi
+
+for b in "${browsers[@]}"; do
+    # Find all PIDs matching the executable path
+    while read -r p; do
+        kill -$sig "$p"
+    done < <(find /proc -maxdepth 2 -name "exe" -lname "$b" 2>$N | cut -d/ -f3)
+done |sort

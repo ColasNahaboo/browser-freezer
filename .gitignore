@@ -1,0 +1,39 @@
+# Code coverage profiles and other test artifacts
+*.out
+coverage.*
+*.coverprofile
+profile.cov
+*.log
+*.tmp
+*.temp
+*.swp
+*.bak
+
+# Dependency directories
+vendor/
+output/
+downloads/
+dist/
+
+# all dotfiles and dirs, except .gitignore itself
+.*
+!.gitignore
+
+# Editor/IDE/OS/debuggers
+*~
+\#*
+__debug_bin
+wlp*.json
+Thumbs.db
+
+# temp / private files & dirs
+INSTALL
+NOTES.md
+NOTES.txt
+OLD
+TODO.md
+browser-freezer
+browser-freezer.o
+
+
+
