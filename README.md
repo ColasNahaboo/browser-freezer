@@ -26,7 +26,7 @@ Make `browser-freezer` a startup application for your desktop. For instance, in 
 
 ## Configuration
 
-The list of browsers can be set in your `.config/browser-freezer.conf` file, as a bash array "browsers" of bash globbing patterns on the executable path of your browser.
+The list of browsers can be set in your `.config/browser-freezer.conf` file, as a bash array "browsers" of bash globbing patterns on the executable path of your browser. Take care of enclosing the paths in quotes if you use globbing chars (star, question marks, square brackets...)
 
 E.g:
 
@@ -40,11 +40,11 @@ browsers=(
 
 ## Usage
 
-Just ensure that `browser-freezer` is run in background, with access to your DISPLAY.
+Just ensure that `browser-freezer` is run in background, with access to your DISPLAY. `browser-freezer` will call `browser-freezer-signal` on screenblanking state changes to freeze or unfrezze the configured browsers.
 
 Also:
 
-- `browser-freezer-signal` just lists the process of the managed browser(s) with their status: T for freezed.
+- `browser-freezer-signal` just lists the process of the managed browser(s) with their status: T for freezed. Useful to test your configuration.
 -  `browser-freezer-signal f` frezzes the managed browser(s)
 -  `browser-freezer-signal u` un-frezzes the managed browser(s)
 
