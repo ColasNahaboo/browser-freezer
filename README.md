@@ -8,7 +8,7 @@ I have a small NUC-style mini PC that I run on linux with X11 (Xubuntu), but I c
 
 It is composed of two parts:
 - a tiny C daemon **browser-freezer** that polls the state of the monitor (On / Off) with as less CPU usage as possible (no forks under X11)
-- on monitor status change detection, run the bash script **browser-freezer-signal** that sends the SIGSTOP or SIGCONT signal to all browser processes (firefox by default). We use a bash script for the most possible flexibility and customization, as performance is not an issue there.
+- on monitor status change detection, it runs the bash script **browser-freezer-signal** that sends the SIGSTOP or SIGCONT signal to all browser processes (firefox by default). It uses a bash script for the most possible flexibility and customization, as performance is not an issue there.
 
 ## Installation
 
@@ -22,7 +22,7 @@ If you want to install elsewhere, give the install directory as argument, e.g:
 
 Make `browser-freezer` (*) a startup application for your desktop. For instance, in XFCE, via the "Startup Applications" dialog in the Settings, where you can add `/usr/local/bin/browser-freezer` to be run on logins.
 
-(*) Note that `browser-freezer` only works under X11. You may want make `browser-freezer-wayland` if you use Wayland, or `browser-freezer-x11-or-wayland` that choses between the two on startup.
+(*) Note that `browser-freezer` only works under X11. You may want make `browser-freezer-wayland` the startup application if you use Wayland, or `browser-freezer-x11-or-wayland` that choses between the two on startup if you may be using both types of sessions.
 
 `make restart` compiles, installs, and runs the process. Must be run under your account, not root.
 
