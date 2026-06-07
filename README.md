@@ -16,6 +16,10 @@ Running INSTALL compiles and installs in `/usr/local/bin`, using sudo if needed.
 If you want to install elsewhere, give the install directory as argument, e.g:
 `INSTALL ~/.local/bin`
 
+It restarts `browser-freezer` and `browser-freezer-wayland` if they were already running and were an older version. But they do not start them if they were not already running.
+
+Updating is thus updating your copy of this repository and running INSTALL.
+
 ```
 ./INSTALL
 ```
@@ -23,8 +27,6 @@ If you want to install elsewhere, give the install directory as argument, e.g:
 Make `browser-freezer` (*) a startup application for your desktop. For instance, in XFCE, via the "Startup Applications" dialog in the Settings, where you can add `/usr/local/bin/browser-freezer` to be run on logins.
 
 (*) Note that `browser-freezer` only works under X11. You may want make `browser-freezer-wayland` the startup application if you use Wayland, or `browser-freezer-x11-or-wayland` that choses between the two on startup if you may be using both types of sessions.
-
-`make restart` compiles, installs, and runs the process. Must be run under your account, not root.
 
 ## Configuration
 
