@@ -1,0 +1,39 @@
+#!/bin/bash
+# shellcheck disable=SC1090,SC2155 # source files, declare&assign
+
+DESTDIR="${1:-/usr/local/bin}"
+CFLAGS=-O2
+LDFLAGS='-lX11 -lXext'
+
+set -x
+
+# Compile and install C programs
+for TARGET in browser-freezer browser-freezer-wayland; do
+    SRC="$TARGET.c"
+    # shellcheck disable=SC2086
+    cc "$CFLAGS" "$SRC" -o "$TARGET" $LDFLAGS || exit 1
+    # Only install it if a different version
+    if ! cmp -s  "$TARGET" "$DESTDIR"/"$TARGET"; then
+        # We sudo if needed for installing in /usr/local/bin
+        if [[ -w "$DESTDIR" ]]; then
+            install -m 755 "$TARGET" "$DESTDIR"/"$TARGET" || exit 2
+        else
+            sudo install -m 755 "$TARGET" "$DESTDIR"/"$TARGET" || exit 2
+        fi
+        # now, restart it but only if it was already running
+        while read -r pid; do
+            kill "$pid" 2>/dev/null
+            sleep 1
+            pkill -9 "$pid" 2>/dev/null
+            sleep 1
+            "$DESTDIR"/"$TARGET" </dev/null >/dev/null 2>&1 &
+        done < <(find /proc -maxdepth 2 -name "exe" -lname "*$TARGET" 2>/dev/null | cut -d/ -f3)
+    fi
+done
+
+# Install bash scripts
+for SCRIPT in browser-freezer-signal browser-freezer-x11-or-wayland; do
+    shellcheck "$SCRIPT" || exit 4
+    cmp -s  "$SCRIPT"  "$DESTDIR"/"$SCRIPT" ||
+        install -m 755 "$SCRIPT"  "$DESTDIR"/"$SCRIPT" || exit 5
+done

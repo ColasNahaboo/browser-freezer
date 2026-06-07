@@ -27,7 +27,6 @@ wlp*.json
 Thumbs.db
 
 # temp / private files & dirs
-INSTALL
 NOTES.md
 NOTES.txt
 OLD
