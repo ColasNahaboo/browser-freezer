@@ -1,0 +1,9 @@
+#!/bin/bash
+# shellcheck disable=SC1090,SC2155 # source files, declare&assign
+
+# Script to launch the Wayland or X11 version of browser-freezer
+if [[ -n "$WAYLAND_DISPLAY" ]]; then
+    exec browser-freezer-wayland
+else
+    exec browser-freezer
+fi

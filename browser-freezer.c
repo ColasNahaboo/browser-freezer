@@ -48,7 +48,7 @@ int ensure_single_instance(void) {
     return fd;
 }
 
-// We use extrena scripts to send the actual signal, as we need flexibility
+// We use external scripts to send the actual signal, as we need flexibility
 // but not performance for this
 void signal_browser(int sig) {
     char command[256];
@@ -66,15 +66,9 @@ void signal_browser(int sig) {
 //     3     DPMSModeOff              Shut off, awaiting activity
 
 int main() {
-    // Enforce single instance execution pattern before touching X11
-    int lock_fd = ensure_single_instance();
-    if (lock_fd < 0) {
-        return 1; // Exit immediately, another daemon process is running
-    }
-
     Display *dpy = XOpenDisplay(NULL);
     if (!dpy) {
-        fprintf(stderr, "Cannot open X display\n");
+        fprintf(stderr, "Error: Cannot open X display, aborting.\n");
         return 1;
     }
 
@@ -83,6 +77,12 @@ int main() {
         fprintf(stderr, "DPMS Extension not supported by X server\n");
         XCloseDisplay(dpy);
         return 1;
+    }
+
+    // Enforce single instance execution pattern before touching X11
+    int lock_fd = ensure_single_instance();
+    if (lock_fd < 0) {
+        return 1; // Exit immediately, another daemon process is running
     }
 
     int was_blanked = 0;
@@ -94,6 +94,14 @@ int main() {
     // Just emit a warning, but keep waiting for extension to be enabled
     if (!state) {
         fprintf(stderr, "Warning: DPMS Extension not enabled, browser-freezer inactive.\n");
+    }
+    // Init: Enforce initial state
+    if (!state || power_level == DPMSModeOn) { // active, force unfreeze
+        signal_browser(SIGCONT);
+        was_blanked = 0;
+    } else { // Screen is blank, force freeze
+        signal_browser(SIGSTOP); // Native Kernel Syscall
+        was_blanked = 1;
     }
     
     while (1) {

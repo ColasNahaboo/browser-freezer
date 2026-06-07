@@ -32,8 +32,11 @@ NOTES.md
 NOTES.txt
 OLD
 TODO.md
+
+# binaries
 browser-freezer
 browser-freezer.o
-
+browser-freezer-wayland
+browser-freezer-wayland.o
 
 
