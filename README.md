@@ -26,7 +26,7 @@ Updating is thus updating your copy of this repository and running INSTALL.
 
 Make `browser-freezer` (*) a startup application for your desktop. For instance, in XFCE, via the "Startup Applications" dialog in the Settings, where you can add `/usr/local/bin/browser-freezer` to be run on logins.
 
-(*) Note that `browser-freezer` only works under X11. You may want to make `browser-freezer-wayland` the startup application if you use Wayland, or `browser-freezer-x11-or-wayland` that choses between the two on startup if you may be using both types of sessions.
+(*) Note that `browser-freezer` only works under X11. You may want to make `browser-freezer-wayland` the startup application if you use Wayland, or `browser-freezer-x11-or-wayland` a wrapper script that choses which of them to execute on startup if you may be using both types of sessions.
 
 ## Configuration
 
