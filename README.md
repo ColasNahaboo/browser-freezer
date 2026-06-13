@@ -28,6 +28,17 @@ Make `browser-freezer` (*) a startup application for your desktop. For instance,
 
 (*) Note that `browser-freezer` only works under X11. You may want to make `browser-freezer-wayland` the startup application if you use Wayland, or `browser-freezer-x11-or-wayland` a wrapper script that choses which of them to execute on startup if you may be using both types of sessions.
 
+For instance, creating a `~/.config/autostart/browser-freezer.desktop` file:
+```
+[Desktop Entry]
+Type=Application
+Exec=/usr/local/bin/browser-freezer
+Name=Browser Freezer
+Comment=Freezes browser when idle
+Terminal=false
+StartupNotify=false
+```
+
 ## Configuration
 
 The list of browsers can be set in your `.config/browser-freezer.conf` file, as a bash array "browsers" of bash globbing patterns on the executable path of your browser. Take care of enclosing the paths in quotes if you use globbing chars (star, question marks, square brackets...)
